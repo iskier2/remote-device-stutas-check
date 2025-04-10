@@ -7,7 +7,7 @@ import time
 CSV_REMOTE_PATH = "/home/stauto/network_devices.csv"
 
 def main(timeout):
-    check_interval = 2
+    check_interval = 20
     sftp_client, close_connection = create_connection()
     end_time = time.time() + timeout
     file_content = read_remote_file(sftp_client, CSV_REMOTE_PATH)

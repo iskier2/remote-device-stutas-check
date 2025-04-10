@@ -8,8 +8,8 @@ def test_valid_csv_parsing():
     assert len(result) == 1
     device = result[0]
     assert device.device_id == 1
-    assert device.hostname == "router01"
-    assert device.ip_address == ipaddress.IPv4Address("192.168.0.1")
+    assert device.hostname == "router-alpha"
+    assert device.ip_address == ipaddress.IPv4Address("192.168.1.1")
     assert device.status == "online"
 
 def test_invalid_status():
