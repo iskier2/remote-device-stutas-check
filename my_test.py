@@ -1,17 +1,13 @@
-from src.ssh_tunel import create_connection
+from src.router import create_connection
 from src.parser import csv_to_network_devices, get_current_statuses
 from src.file_fetcher import read_remote_file
 import argparse
 import time
 
-parser = argparse.ArgumentParser(description='Network devices monitor test')
-parser.add_argument('--timeout', type=int, required=True, help='Timeout in seconds for monitoring phase')
-timeout = parser.parse_args().timeout
-check_interval = 2
-
 CSV_REMOTE_PATH = "/home/stauto/network_devices.csv"
 
-def main():
+def main(timeout):
+    check_interval = 2
     sftp_client, close_connection = create_connection()
     end_time = time.time() + timeout
     file_content = read_remote_file(sftp_client, CSV_REMOTE_PATH)
@@ -29,7 +25,11 @@ def main():
             assert status == 'online'
 
         time.sleep(check_interval)
-
     close_connection()
+    return 0
 
-main()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Network devices monitor test')
+    parser.add_argument('--timeout', type=int, required=True, help='Timeout in seconds for monitoring phase')
+    timeout = parser.parse_args().timeout
+    main(timeout)
