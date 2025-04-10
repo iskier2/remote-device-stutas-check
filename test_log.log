@@ -1,0 +1,12 @@
+Error in line 40: {'device_id': '41', 'hostname': 'router-rho2', 'ip_address': 'invalid_host', 'vendor': '192.168.1.221', 'model': 'DoubleLink', 'firmware_version': 'DIR-882', 'status': '1.21', None: ['online']} 
+ Invalid status: 1.21
+
+Error in line 41: {'device_id': '42', 'hostname': 'switch-sigma2', 'ip_address': '42', 'vendor': '192.168.1.222', 'model': 'TrendMesh', 'firmware_version': 'TEG-S80g', 'status': '1.0.2', None: ['offline']} 
+ Invalid status: 1.0.2
+
+Error in line 42: {'device_id': '43', 'hostname': 'firewall-tau2', 'ip_address': '192.168.invalid_ip', 'vendor': 'LookoutTower', 'model': 'Firebox T35', 'firmware_version': '12.5.9', 'status': 'online'} 
+ Invalid IP address: 192.168.invalid_ip
+
+Error in line 43: {'device_id': '44', 'hostname': 'server-upsilon2', 'ip_address': '192.168.1.224', 'vendor': 'LongBox', 'model': 'ThinkSystem SR650', 'firmware_version': '4.2.2', 'status': 'badstatus'} 
+ Invalid status: badstatus
+
