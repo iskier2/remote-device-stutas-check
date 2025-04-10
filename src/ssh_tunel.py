@@ -1,4 +1,16 @@
 import paramiko
+import os
+from io import StringIO
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SERVER_A_ADDRESS = os.environ["SERVER_A_ADDRESS"]
+SERVER_B_ADDRESS = os.environ["SERVER_B_ADDRESS"]
+SERVER_A_KEY = paramiko.RSAKey.from_private_key(StringIO(os.environ["SERVER_A_KEY"]))
+SERVER_B_KEY = paramiko.RSAKey.from_private_key(StringIO(os.environ["SERVER_B_KEY"]))
+CSV_REMOTE_PATH = "/home/stauto/network_devices.csv"
+USERNAME = "stauto"
 
 def connect_server(host, port, username, key, sock=None):
     client = paramiko.SSHClient()
@@ -14,5 +26,14 @@ def open_channel(client_A, server_b_host, server_b_port):
     print(f"Utworzono kanał do serwera B: {server_b_host}:{server_b_port}")
     return channel
 
-
+def create_connection():
+    client_A = connect_server(SERVER_A_ADDRESS, 22, USERNAME, SERVER_A_KEY)
+    channel = open_channel(client_A, SERVER_B_ADDRESS, 22)
+    client_B = connect_server(SERVER_B_ADDRESS, 22, USERNAME, SERVER_B_KEY, sock=channel)
+    sftp_client = client_B.open_sftp()
+    def close_connection():
+        sftp_client.close()
+        client_B.close()
+        client_A.close()
+    return sftp_client, close_connection
 
