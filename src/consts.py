@@ -9,3 +9,5 @@ class DisconectedDevice(Exception):
 class DeviceNotFoundError(Exception):
     pass
 
+class ConnectionError(Exception):
+    pass

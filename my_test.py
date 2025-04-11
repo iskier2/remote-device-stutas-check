@@ -20,6 +20,8 @@ def main(repeats: int) -> int:
             raise DeviceNotFoundError
         monitor(online_devices, sftp_client, repeats)
         logging.info("Finished monitoring devices successfully.")
+    except ConnectionError as e:
+        raise ConnectionError
     except DisconectedDevice as e:
         raise DisconectedDevice
     except DeviceNotFoundError as e:

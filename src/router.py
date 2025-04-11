@@ -4,7 +4,8 @@ from io import StringIO
 from dotenv import load_dotenv
 import socket
 import logging
-from src.consts import USERNAME, SSH_SERVER_PORT
+from src.consts import USERNAME, SSH_SERVER_PORT, ConnectionError
+
 load_dotenv()
 
 SERVER_A_ADDRESS = os.environ["SERVER_A_ADDRESS"]
@@ -21,16 +22,16 @@ def connect_server(host: str, port: int, username: str, key: paramiko.PKey, sock
     
     except paramiko.AuthenticationException as auth_err:
         logging.error(f"Authentication failed while connecting to server {host}: {auth_err}")
-        raise
+        raise ConnectionError
     except paramiko.SSHException as ssh_err:
         logging.error(f"SSH error occurred while connecting to server {host}: {ssh_err}")
-        raise
+        raise ConnectionError
     except socket.error as sock_err:
         logging.error(f"Socket error occurred while connecting to server {host}: {sock_err}")
-        raise
+        raise ConnectionError
     except Exception as e:
         logging.error(f"An unexpected error occurred while connecting to server {host}: {e}")
-        raise
+        raise ConnectionError
     
 
 
@@ -50,10 +51,10 @@ def open_channel(client_A: paramiko.SSHClient, server_b_host: str, server_b_port
     
     except paramiko.SSHException as ssh_err:
         logging.error(f"SSH error occurred while opening channel: {ssh_err}")
-        raise
+        raise ConnectionError
     except socket.error as sock_err:
         logging.error(f"Socket error occurred while opening channel: {sock_err}")
-        raise
+        raise ConnectionError
     
 
 def create_connection() -> tuple:
@@ -71,18 +72,19 @@ def create_connection() -> tuple:
             client_A.close()
 
         return sftp_client, close_connection
-    
+    except ConnectionError:
+        raise ConnectionError
     except paramiko.SSHException as ssh_err:
         logging.error(f"SSH error occurred during connection setup: {ssh_err}")
-        raise
+        raise ConnectionError
     except paramiko.AuthenticationException as auth_err:
         logging.error(f"Authentication error occurred during connection setup: {auth_err}")
-        raise
+        raise ConnectionError
     except socket.error as sock_err:
         logging.error(f"Socket error occurred during connection setup: {sock_err}")
-        raise
+        raise ConnectionError
     except Exception as e:
         logging.error(f"An unexpected error occurred during connection setup: {e}")
-        raise
+        raise ConnectionError
     
 
