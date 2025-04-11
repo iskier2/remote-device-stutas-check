@@ -1,9 +1,7 @@
-def read_remote_file(sftp_client, filepath):
+from paramiko import SFTPClient
+
+def read_remote_file(sftp_client: SFTPClient, filepath: str) -> str:
     try:
-        with sftp_client.open(filepath, 'r') as remote_file:
-            file_content = remote_file.read().decode('utf-8')
-        print("Pomyślnie odczytano plik przy użyciu SFTP.")
-        return file_content
+        return sftp_client.open(filepath, 'r').read().decode('utf-8')
     except Exception as e:
-        print("Wystąpił błąd podczas odczytu pliku przez SFTP:", e)
-        return None
+        raise RuntimeError(f"Cannot read remote file: {e}")

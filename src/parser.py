@@ -1,11 +1,10 @@
-import ipaddress
 from typing import List
 import csv
-from src.logger import write_log
 import io
 from src.NetworkDevice import NetworkDevice
+import logging
 
-def csv_to_network_devices(csv_file) -> List[NetworkDevice]:
+def csv_to_network_devices(csv_file: str) -> List[NetworkDevice]:
     devices = []
     reader = csv.DictReader(io.StringIO(csv_file))
     for i, row in enumerate(reader):
@@ -13,10 +12,10 @@ def csv_to_network_devices(csv_file) -> List[NetworkDevice]:
             device = NetworkDevice(row)
             devices.append(device)
         except ValueError as e:
-            write_log(i, row, e)
+            logging.error(f"row {i}: {e}")
     return devices
 
-def get_current_statuses(csv_file) -> dict:
+def get_current_statuses(csv_file: str) -> dict:
     current_statuses = {}
     reader = csv.DictReader(io.StringIO(csv_file))
     for row in reader:

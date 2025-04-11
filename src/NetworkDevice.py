@@ -1,5 +1,5 @@
 import ipaddress
-
+import logging
 class NetworkDevice:
     device_id: int
     hostname: str
@@ -11,7 +11,7 @@ class NetworkDevice:
 
     def __init__(self, data: dict):
         for key, value in data.items():
-            if not isinstance(value, str):
+            if key is not None and not isinstance(value, str):
                 raise ValueError(f"Invalid type for field '{key}': Expected string, got {type(value).__name__}")
         if data["status"] not in {"online", "offline"}:
             raise ValueError(f"Invalid status: {data['status']}")
