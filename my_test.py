@@ -30,7 +30,8 @@ def main(repeats: int) -> int:
         logging.error(f"An error occurred during monitoring: {e}")
         raise
     finally:
-        close_connection()
+        if 'sftp_client' in locals():
+            close_connection()
         logging.info("Closing the script.")
         
 
